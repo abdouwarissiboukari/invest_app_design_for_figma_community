@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:invest_app/data/AppColors.dart';
+import 'package:invest_app/main.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:provider/provider.dart';
 
 class CustomScaffoldWithIcon extends StatelessWidget {
+  Widget drawer;
   Widget bodyWidget;
   String appTitleText;
   Widget leadingIcon;
@@ -16,13 +18,12 @@ class CustomScaffoldWithIcon extends StatelessWidget {
     required this.leadingIcon,
     required this.trailingIcon,
     required this.bodyWidget,
+    required this.drawer,
   });
 
   @override
   Widget build(BuildContext context) {
-    return (context.watch<DataProvider>().osType)
-        ? iOSScaffold(context)
-        : androidScaffold(context);
+    return (blOsType) ? iOSScaffold(context) : androidScaffold(context);
   }
 
   Text appTitle() => Text(
@@ -45,6 +46,7 @@ class CustomScaffoldWithIcon extends StatelessWidget {
 
   Scaffold androidScaffold(BuildContext context) {
     return Scaffold(
+      drawer: drawer,
       appBar: AppBar(
         backgroundColor: appBackgroundColor,
         leading: leadingIcon,

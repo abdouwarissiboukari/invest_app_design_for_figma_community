@@ -1,22 +1,16 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:invest_app/main.dart';
 import 'package:invest_app/services/DataPreferences.dart';
 
 class DataProvider with ChangeNotifier {
   bool isConnect = false;
-  late bool osType;
   String strFullName = "";
+  final String keyIsConnect = "IsConnect";
+  final String keyFullName = "FullName";
 
   DataProvider() {
-    getOsType();
-    getIsConnect();
+    getUserInfo();
     blIsConnected = isConnect;
-    if (blIsConnected) {
-      getFullName();
-      userFullName = strFullName;
-    }
   }
 
   getIsConnect() async {
@@ -25,8 +19,10 @@ class DataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  getFullName() async {
-    strFullName = await DataPreferences().getFullName();
+  getUserInfo() async {
+    final map = await DataPreferences().getUserInfo();
+    isConnect = map[keyIsConnect];
+    strFullName = map[keyFullName];
 
     notifyListeners();
   }
@@ -40,17 +36,15 @@ class DataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setFullName(String value) async {
-    bool isSuccess = await DataPreferences().setFullName(value);
+  setUserInfo({required bool isConnected, required String fullName}) async {
+    bool isSuccess = await DataPreferences()
+        .setUserInfo({keyIsConnect: isConnected, keyFullName: fullName});
 
     if (isSuccess) {
-      strFullName = value;
+      isConnect = isConnected;
+      strFullName = fullName;
     }
-    notifyListeners();
-  }
 
-  getOsType() {
-    osType = (Platform.isIOS ? true : false);
     notifyListeners();
   }
 }

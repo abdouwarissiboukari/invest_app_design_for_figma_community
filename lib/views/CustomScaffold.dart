@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:invest_app/data/AppColors.dart';
+import 'package:invest_app/main.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -12,9 +13,7 @@ class CustomScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (context.watch<DataProvider>().osType)
-        ? iOSScaffold()
-        : androidScaffold();
+    return (blOsType) ? iOSScaffold() : androidScaffold();
   }
 
   Text appTitle() => Text(

@@ -1,14 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:invest_app/data/OsThemeExtension.dart';
+import 'package:invest_app/models/User.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/MyApp.dart';
 
 bool isDarkMode = false;
-bool blOsType = false;
+bool blOsType = (Platform.isIOS ? true : false);
 bool blIsConnected = false;
-String userFullName = "";
+Size deviceSize = const Size(0, 0);
+late User userConnected;
 
 void main() {
   runApp(

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:invest_app/data/AppColors.dart';
+import 'package:invest_app/views/CustomDrawer.dart';
 import 'package:invest_app/views/CustomIconButton.dart';
 import 'package:invest_app/views/CustomScaffoldWithIcon.dart';
 
@@ -19,10 +20,13 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffoldWithIcon(
-      leadingIcon: CustomIconButton(
-          onPressed: onDrawerIconPressed,
-          icon: Icons.menu,
-          color: appIconColorGray),
+      drawer: CustomDrawer(),
+      leadingIcon: Builder(
+        builder: (context) => CustomIconButton(
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            icon: Icons.menu,
+            color: appIconColorGray),
+      ),
       trailingIcon: CustomIconButton(
           onPressed: onNotificationIconPressed,
           icon: Icons.notifications_rounded,
@@ -40,7 +44,9 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  onDrawerIconPressed() {}
+  onDrawerIconPressed() {
+    Scaffold.of(context).openDrawer();
+  }
 
   onNotificationIconPressed() {}
 }

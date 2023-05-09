@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invest_app/controllers/HomePage.dart';
+import 'package:invest_app/controllers/LoginPage.dart';
 import 'package:invest_app/data/AppColors.dart';
+import 'package:invest_app/main.dart';
+import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomButton.dart';
 import 'package:invest_app/views/CustomIconButton.dart';
 import 'package:invest_app/views/CustomScaffoldWithIcon.dart';
+import 'package:invest_app/views/CustomSnackbar.dart';
+import 'package:invest_app/views/CustomTextFormField.dart';
 import 'package:invest_app/views/CustomTitleTextView.dart';
+import 'package:provider/provider.dart';
 
 class CreateAccountPage extends StatefulWidget {
   @override
@@ -14,24 +20,27 @@ class CreateAccountPage extends StatefulWidget {
 
 class CreateAccountPageState extends State<CreateAccountPage> {
   final formKey = GlobalKey<FormState>();
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  late TextEditingController fullNameController;
+  late TextEditingController emailController;
   TextEditingController passwordController = TextEditingController();
   bool isPassWordShow = true;
 
-  String strTitle = "Create an account";
-  String strDescription = "Invest and double your income now";
-  String strFullName = "Full Name";
-  String strEmail = "Email Address";
-  String strPassword = "Passwaord";
-  String strFormValationError = "Please fill the inputs";
-  String strButtonTex = "Create account";
-  String strAlreadyText = "Already have an account?";
+  final strTitle = "Create an account";
+  final strDescription = "Invest and double your income now";
+  final strFullName = "Full Name";
+  final strEmail = "Email Address";
+  final strPassword = "Password";
+  final strFormValationError = "Please fill the inputs";
+  final strButtonTex = "Create account";
+  final strAlreadyText = "Already have an account?";
+  final strErrorText = "Please enter your";
 
   @override
   void initState() {
     super.initState();
     formKey.currentState?.initState();
+    fullNameController.text = userConnected.fullName;
+    emailController.text = userConnected.email;
   }
 
   @override
@@ -45,8 +54,11 @@ class CreateAccountPageState extends State<CreateAccountPage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return CustomScaffoldWithIcon(
+      drawer: const SizedBox(
+        height: 0,
+        width: 0,
+      ),
       leadingIcon: CustomIconButton(
         onPressed: onBackPressed,
         icon: Icons.arrow_back_ios,
@@ -85,107 +97,65 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                       mainAxisSize: MainAxisSize.max,
                       children: [
                         // Full Name
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 18),
-                          child: TextFormField(
-                            controller: fullNameController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: appPrimaryColor),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: appInputBorderColor, width: 0.5),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              labelText: strFullName,
-                              labelStyle: GoogleFonts.signika(
-                                color: appInputBorderColor,
-                                fontSize: 17,
-                              ),
-                            ),
-                            validator: (value) => onFullNameValidation(value),
+                        CustomTextFormField(
+                          suffixIcon: const SizedBox(
+                            height: 0,
+                            width: 0,
                           ),
+                          obscureText: false,
+                          onTextFormFieldValidation: onFullNameValidation,
+                          textEditingController: fullNameController,
+                          strLabelText: strFullName,
                         ),
                         // Email Address
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 18),
-                          child: TextFormField(
-                            controller: emailController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: appPrimaryColor),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: appInputBorderColor, width: 0.5),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              labelText: strEmail,
-                              labelStyle: GoogleFonts.signika(
-                                color: appInputBorderColor,
-                                fontSize: 17,
-                              ),
+                        CustomTextFormField(
+                            suffixIcon: const SizedBox(
+                              height: 0,
+                              width: 0,
                             ),
-                            validator: (value) => onEmailValidation(value),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 33),
-                          child: TextFormField(
-                            controller: passwordController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide(color: appPrimaryColor),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: appInputBorderColor, width: 0.5),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              labelText: strPassword,
-                              labelStyle: GoogleFonts.signika(
-                                color: appInputBorderColor,
-                                fontSize: 17,
-                              ),
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isPassWordShow = !isPassWordShow;
-                                  });
-                                },
-                                icon: Icon((isPassWordShow)
+                            obscureText: false,
+                            onTextFormFieldValidation: onEmailValidation,
+                            textEditingController: emailController,
+                            strLabelText: strEmail),
+                        // Password
+                        CustomTextFormField(
+                            suffixIcon: CustomIconButton(
+                                onPressed: onShowPasswordPressed,
+                                icon: (isPassWordShow)
                                     ? Icons.visibility_off
-                                    : Icons.visibility),
-                              ),
-                            ),
+                                    : Icons.visibility,
+                                color: appInputBorderColor),
                             obscureText: isPassWordShow,
-                            validator: (value) => onPasswordValidation(value),
-                          ),
-                        ),
+                            onTextFormFieldValidation: onPasswordValidation,
+                            textEditingController: passwordController,
+                            strLabelText: strPassword),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 44),
                           child: CustomButton(
                             onButtonPressed: onCreateAccountPressed,
                             buttonTex: strButtonTex,
-                            width: size.width,
+                            width: deviceSize.width,
                             buttonColor: appPrimaryColor,
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 0),
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext ctx) => LoginPage(),
+                                ),
+                              );
+                            },
                             child: Text(
                               strAlreadyText,
                               style: GoogleFonts.signika(
                                   color: appPrimaryColor, fontSize: 17),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -202,35 +172,49 @@ class CreateAccountPageState extends State<CreateAccountPage> {
     Navigator.pop(context);
   }
 
+  onShowPasswordPressed() {
+    setState(() {
+      isPassWordShow = !isPassWordShow;
+    });
+  }
+
   String? onFullNameValidation(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your Full Name';
+      return '$strErrorText $strFullName';
     }
     return null;
   }
 
   String? onEmailValidation(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your Email Address';
+      return '$strErrorText $strEmail';
     }
     return null;
   }
 
   String? onPasswordValidation(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter your Password';
+      return '$strErrorText $strPassword';
     }
     return null;
   }
 
   onCreateAccountPressed() {
     if (formKey.currentState!.validate()) {
+      //There must be implemented the logic of userAccount creation
+
+      userConnected.fullName = fullNameController.text;
+
+      context
+          .read<DataProvider>()
+          .setUserInfo(isConnected: true, fullName: fullNameController.text);
+
       Navigator.pop(context);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (BuildContext ctx) => HomePage(
-            strFullName: fullNameController.text,
+            strFullName: userConnected.fullName,
           ),
         ),
       ).then((_) {
@@ -240,11 +224,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: appTextColorGray,
-          content: CustomTitleTextView(
-              textValue: strFormValationError, textColor: appBackgroundColor),
-        ),
+        CustomSnackbar(strTextValue: strFormValationError),
       );
     }
   }

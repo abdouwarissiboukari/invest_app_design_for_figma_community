@@ -6,8 +6,9 @@ import 'package:invest_app/controllers/SignUpPage.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/data/OsThemeExtension.dart';
 import 'package:invest_app/main.dart';
-import 'package:invest_app/services/DataProvider.dart';
-import 'package:provider/provider.dart';
+import 'package:invest_app/models/Gender.dart';
+import 'package:invest_app/models/User.dart';
+import 'package:invest_app/services/DataPreferences.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -20,14 +21,14 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
+    getIsConnected();
     Timer(const Duration(seconds: 3), () {
       if (blIsConnected) {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => HomePage(
-              strFullName: userFullName,
+              strFullName: userConnected.fullName,
             ),
           ),
         );
@@ -44,15 +45,17 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    blIsConnected = context.watch<DataProvider>().isConnect;
-    isDarkMode = context.isDarkMode;
-    blOsType = context
-        .watch<DataProvider>()
-        .osType; // Get the Device OS... iOS = tue, Android = false
+    // blIsConnected = context.watch<DataProvider>().isConnect;
+    // userFullName = context.watch<DataProvider>().strFullName;
+    // blOsType = context
+    //     .watch<DataProvider>()
+    //     .osType; // Get the Device OS... iOS = tue, Android = false
 
-    Size size = MediaQuery.of(context).size;
+    isDarkMode = context.isDarkMode;
+    deviceSize = MediaQuery.of(context).size;
     String splashScreenUrl =
         (isDarkMode) ? "assets/dark_sc.png" : "assets/ligth_sc.png";
+
     return Container(
       color: appBackgroundColor,
       child: Column(
@@ -61,28 +64,43 @@ class SplashScreenState extends State<SplashScreen> {
         children: [
           Container(
             padding: EdgeInsets.only(
-              left: size.height * 0.14,
-              right: size.height * 0.14,
-              top: size.height * 0.28,
+              left: deviceSize.height * 0.14,
+              right: deviceSize.height * 0.14,
+              top: deviceSize.height * 0.28,
             ),
-            width: size.width,
-            height: size.height * 0.6,
+            width: deviceSize.width,
+            height: deviceSize.height * 0.6,
             child: Image.asset(
               splashScreenUrl,
             ),
           ),
           Container(
-            height: size.height * 0.3,
+            height: deviceSize.height * 0.3,
           ),
           SizedBox(
-              width: size.width * 0.6,
-              child: LinearProgressIndicator(
-                backgroundColor: appPrimaryColor.withOpacity(0.2),
-                color: appPrimaryColor,
-                minHeight: 1,
-              ))
+            width: deviceSize.width * 0.6,
+            child: LinearProgressIndicator(
+              backgroundColor: appPrimaryColor.withOpacity(0.2),
+              color: appPrimaryColor,
+              minHeight: 1,
+            ),
+          ),
         ],
       ),
     );
+  }
+
+  Future<void> getIsConnected() async {
+    blIsConnected = await DataPreferences().getIsConnect();
+    if (blIsConnected) {
+      userConnected = User(
+        id: 1,
+        fullName: "Warren Buffet",
+        gender: Gender.male,
+        birthdate: DateTime(1987, 4, 7),
+        email: "warren.buff@invest.ai",
+        urlProfile: "profil.png",
+      );
+    }
   }
 }
