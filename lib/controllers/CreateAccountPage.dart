@@ -4,6 +4,9 @@ import 'package:invest_app/controllers/HomePage.dart';
 import 'package:invest_app/controllers/LoginPage.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/main.dart';
+import 'package:invest_app/models/Account.dart';
+import 'package:invest_app/models/Gender.dart';
+import 'package:invest_app/models/User.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomButton.dart';
 import 'package:invest_app/views/CustomIconButton.dart';
@@ -136,6 +139,8 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                             buttonTex: strButtonTex,
                             width: deviceSize.width,
                             buttonColor: appPrimaryColor,
+                            textColor: buttonTextColor,
+                            textSize: 17,
                           ),
                         ),
                         Padding(
@@ -203,7 +208,21 @@ class CreateAccountPageState extends State<CreateAccountPage> {
     if (formKey.currentState!.validate()) {
       //There must be implemented the logic of userAccount creation
 
-      userConnected.fullName = fullNameController.text;
+      userConnected = User(
+        id: 1,
+        fullName: fullNameController.text,
+        gender: Gender.male,
+        birthdate: DateTime(1987, 4, 7),
+        email: "warren.buff@invest.ai",
+        urlProfile: "profil.png",
+      );
+
+      defaultAccount = Account(
+        userId: 1,
+        accountNumber: "70009899443X",
+        accountName: "House Investment",
+        accountBalance: 203935,
+      );
 
       context
           .read<DataProvider>()
@@ -224,7 +243,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackbar(strTextValue: strFormValationError),
+        CustomSnackbar(strTextValue: strFormValationError, context: context),
       );
     }
   }

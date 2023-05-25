@@ -34,8 +34,9 @@ class CustomTitleTextView extends StatelessWidget {
           color: textColor,
           fontSize: textSize,
         ),
-        maxLines: 2,
+        maxLines: textMaxLine,
         textAlign: textAlign,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

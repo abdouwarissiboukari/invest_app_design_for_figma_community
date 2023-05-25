@@ -12,19 +12,19 @@ class CustomScaffoldLight extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (blOsType) ? iOSScaffold() : androidScaffold();
+    return (blOsType) ? iOSScaffold(context) : androidScaffold(context);
   }
 
-  CupertinoPageScaffold iOSScaffold() {
+  CupertinoPageScaffold iOSScaffold(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: appBackgroundColor,
+      backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
       child: bodyWidget,
     );
   }
 
-  Scaffold androidScaffold() {
+  Scaffold androidScaffold(BuildContext context) {
     return Scaffold(
-      backgroundColor: appBackgroundColor,
+      backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
       body: bodyWidget,
     );
   }

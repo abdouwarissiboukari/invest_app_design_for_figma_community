@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invest_app/controllers/CreateAccountPage.dart';
 import 'package:invest_app/controllers/HomePage.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/main.dart';
+import 'package:invest_app/models/Account.dart';
+import 'package:invest_app/models/Gender.dart';
+import 'package:invest_app/models/User.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomButton.dart';
 import 'package:invest_app/views/CustomIconButton.dart';
@@ -58,9 +62,10 @@ class LoginPageState extends State<LoginPage> {
           width: 0,
         ),
         leadingIcon: CustomIconButton(
-            onPressed: onBackPressed,
-            icon: Icons.arrow_back_ios,
-            color: appIconColorGray),
+          onPressed: onBackPressed,
+          icon: Icons.arrow_back_ios,
+          color: context.watch<DataProvider>().appIconColorGray_dp,
+        ),
         trailingIcon: const SizedBox(
           height: 0,
           width: 0,
@@ -74,12 +79,12 @@ class LoginPageState extends State<LoginPage> {
             children: [
               CustomTitleTextView(
                 textValue: strTitle,
-                textColor: appTextColor,
+                textColor: context.watch<DataProvider>().appTextColor_dp,
                 textSize: 32,
               ),
               CustomTitleTextView(
                 textValue: strDescription,
-                textColor: appTextColor,
+                textColor: context.watch<DataProvider>().appTextColor_dp,
               ),
               Form(
                 key: formKey,
@@ -121,6 +126,8 @@ class LoginPageState extends State<LoginPage> {
                           buttonTex: strButtonTex,
                           width: deviceSize.width,
                           buttonColor: appPrimaryColor,
+                          textColor: buttonTextColor,
+                          textSize: 17,
                         ),
                       ),
                       Padding(
@@ -182,6 +189,23 @@ class LoginPageState extends State<LoginPage> {
       if (emailController.text == 'x7log' &&
           passwordController.text == 'rush7') {
         context.read<DataProvider>().setIsConnect(true);
+
+        userConnected = User(
+          id: 1,
+          fullName: "Warren Buffet",
+          gender: Gender.male,
+          birthdate: DateTime(1987, 4, 7),
+          email: "warren.buff@invest.ai",
+          urlProfile: "profil.png",
+        );
+
+        defaultAccount = Account(
+          userId: 1,
+          accountNumber: "70009899443X",
+          accountName: "House Investment",
+          accountBalance: 203935,
+        );
+
         Navigator.pop(context);
         Navigator.pushReplacement(
           context,
@@ -192,12 +216,12 @@ class LoginPageState extends State<LoginPage> {
         ).then((value) => formKey.currentState?.reset());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          CustomSnackbar(strTextValue: strConnexioxErrorText),
+          CustomSnackbar(strTextValue: strConnexioxErrorText, context: context),
         );
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        CustomSnackbar(strTextValue: strFormValationError),
+        CustomSnackbar(strTextValue: strFormValationError, context: context),
       );
     }
   }

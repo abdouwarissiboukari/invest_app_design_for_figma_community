@@ -33,13 +33,13 @@ class CustomScaffoldWithIcon extends StatelessWidget {
   CupertinoPageScaffold iOSScaffold(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        leading: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_ios)),
+        backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
+        leading: leadingIcon,
         brightness: Brightness.light,
         middle: appTitle(),
+        trailing: trailingIcon,
       ),
-      backgroundColor: appBackgroundColor,
+      backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
       child: bodyWidget,
     );
   }
@@ -48,7 +48,7 @@ class CustomScaffoldWithIcon extends StatelessWidget {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        backgroundColor: appBackgroundColor,
+        backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
         leading: leadingIcon,
         actions: [
           Row(
@@ -63,7 +63,7 @@ class CustomScaffoldWithIcon extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      backgroundColor: appBackgroundColor,
+      backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
       body: bodyWidget,
     );
   }

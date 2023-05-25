@@ -7,6 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:invest_app/controllers/MyApp.dart';
 
 import 'package:invest_app/main.dart';
 

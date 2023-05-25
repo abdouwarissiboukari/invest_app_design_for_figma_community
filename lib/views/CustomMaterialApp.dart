@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 class CustomMaterialApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return (blOsType) ? iOSMaterialApp() : androidMaterialApp();
+    return (blOsType) ? iOSMaterialApp() : androidMaterialApp(context);
   }
 
   CupertinoApp iOSMaterialApp() {
@@ -33,13 +33,13 @@ class CustomMaterialApp extends StatelessWidget {
     );
   }
 
-  MaterialApp androidMaterialApp() {
+  MaterialApp androidMaterialApp(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorSchemeSeed: appPrimaryColor,
         appBarTheme: AppBarTheme(
-          backgroundColor: appBackgroundColor,
+          backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
           centerTitle: true,
           titleTextStyle: GoogleFonts.signika(
             fontSize: 20,

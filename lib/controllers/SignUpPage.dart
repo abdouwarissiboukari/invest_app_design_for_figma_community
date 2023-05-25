@@ -4,9 +4,11 @@ import 'package:invest_app/controllers/CreateAccountPage.dart';
 import 'package:invest_app/controllers/LoginPage.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/main.dart';
+import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomButton.dart';
 import 'package:invest_app/views/CustomScaffoldLight.dart';
 import 'package:invest_app/views/CustomTitleTextView.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -43,13 +45,13 @@ class SignUpPageState extends State<SignUpPage> {
                 ),
                 CustomTitleTextView(
                   textValue: signUpTitle,
-                  textColor: appTextColor,
+                  textColor: context.watch<DataProvider>().appTextColor_dp,
                   textMaxLine: 2,
                   textSize: 30,
                 ),
                 CustomTitleTextView(
                   textValue: signUpDescription,
-                  textColor: appTextColorGray,
+                  textColor: context.watch<DataProvider>().appTextColorGray_dp,
                   textMaxLine: 2,
                 ),
                 SizedBox(
@@ -69,10 +71,13 @@ class SignUpPageState extends State<SignUpPage> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 17),
                         child: CustomButton(
-                            onButtonPressed: onSigninPressed,
-                            buttonTex: signUpButtonText,
-                            width: deviceSize.width,
-                            buttonColor: appPrimaryColor),
+                          onButtonPressed: onSigninPressed,
+                          buttonTex: signUpButtonText,
+                          width: deviceSize.width,
+                          buttonColor: appPrimaryColor,
+                          textColor: buttonTextColor,
+                          textSize: 17,
+                        ),
                       ),
                       TextButton(
                         onPressed: () {

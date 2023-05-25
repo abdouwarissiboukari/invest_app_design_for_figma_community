@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invest_app/data/AppColors.dart';
+import 'package:invest_app/services/DataProvider.dart';
+import 'package:provider/provider.dart';
 
 class CustomInkWell extends StatelessWidget {
   Function() onTap;
@@ -21,7 +23,7 @@ class CustomInkWell extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 15, bottom: 5),
+        padding: const EdgeInsets.only(top: 15, left: 20, bottom: 5),
         child: Row(
           children: [
             iconLeft,
@@ -30,7 +32,10 @@ class CustomInkWell extends StatelessWidget {
             ),
             Text(
               textValue,
-              style: GoogleFonts.signika(color: appTextColor, fontSize: 17),
+              style: GoogleFonts.signika(
+                color: context.watch<DataProvider>().appTextColor_dp,
+                fontSize: 15,
+              ),
               textAlign: TextAlign.left,
             ),
             const Spacer(),

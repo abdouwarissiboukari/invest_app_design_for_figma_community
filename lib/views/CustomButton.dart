@@ -8,31 +8,37 @@ class CustomButton extends StatelessWidget {
   double width;
   String buttonTex;
   Color buttonColor;
+  Color textColor;
+  double textSize;
   Function() onButtonPressed;
 
-  CustomButton(
-      {super.key,
-      required this.onButtonPressed,
-      required this.buttonTex,
-      required this.width,
-      required this.buttonColor});
+  CustomButton({
+    super.key,
+    required this.onButtonPressed,
+    required this.buttonTex,
+    required this.width,
+    required this.buttonColor,
+    required this.textColor,
+    required this.textSize,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return (blOsType) ? iOSButton() : androidButton();
+    return Material(
+        color: Colors.transparent,
+        child: (blOsType) ? androidButton() : androidButton());
   }
 
   Widget iOSButton() {
     return CupertinoButton(
-      minSize: 60,
       color: buttonColor,
       borderRadius: BorderRadius.circular(15),
       onPressed: onButtonPressed,
       child: Text(
         buttonTex,
         style: GoogleFonts.signika(
-          color: buttonTextColor,
-          fontSize: 17,
+          color: textColor,
+          fontSize: textSize,
         ),
       ),
     );
@@ -51,8 +57,8 @@ class CustomButton extends StatelessWidget {
       child: Text(
         buttonTex,
         style: GoogleFonts.signika(
-          color: buttonTextColor,
-          fontSize: 17,
+          color: textColor,
+          fontSize: textSize,
         ),
       ),
     );
