@@ -22,21 +22,24 @@ class CustomTitleTextView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-      ),
-      width: size.width,
-      child: Text(
-        textValue,
-        style: GoogleFonts.signika(
-          color: textColor,
-          fontSize: textSize,
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        padding: const EdgeInsets.only(
+          left: 30,
+          right: 30,
         ),
-        maxLines: textMaxLine,
-        textAlign: textAlign,
-        overflow: TextOverflow.ellipsis,
+        width: size.width,
+        child: Text(
+          textValue,
+          style: GoogleFonts.signika(
+            color: textColor,
+            fontSize: textSize,
+          ),
+          maxLines: textMaxLine,
+          textAlign: textAlign,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     );
   }

@@ -4,11 +4,11 @@ import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/models/BestPlan.dart';
 import 'package:invest_app/views/CustomTextView.dart';
 
-class CustomPlanCard extends StatelessWidget {
+class CustomPlanLargeCard extends StatelessWidget {
   BestPlan bestPlan;
   Function() onTap;
 
-  CustomPlanCard({
+  CustomPlanLargeCard({
     super.key,
     required this.bestPlan,
     required this.onTap,
@@ -28,7 +28,7 @@ class CustomPlanCard extends StatelessWidget {
           ),
           color: bestPlan.planColors[0],
           child: Container(
-            width: 134,
+            width: 354,
             height: 170,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -42,28 +42,29 @@ class CustomPlanCard extends StatelessWidget {
             child: Stack(
               children: [
                 Transform.translate(
-                  offset: const Offset(15, 12),
+                  offset: const Offset(30, 38),
                   child: CustomTextView(
                     textValue: bestPlan.title,
-                    textColor: appLightColorL,
+                    textColor: appDarkColor,
                     fontWeight: FontWeight.bold,
+                    fontSize: 18,
                   ),
                 ),
                 Transform.translate(
-                  offset: const Offset(15, 30),
+                  offset: const Offset(30, 60),
                   child: CustomTextView(
                     textValue: bestPlan.getDiscount,
-                    textColor: appLightColorL,
-                    fontSize: 14,
+                    textColor: appDarkColor,
+                    fontSize: 15,
                   ),
                 ),
                 Transform.translate(
                   transformHitTests: false,
-                  offset: const Offset(20, 42),
+                  offset: const Offset(150, 12),
                   child: Image.asset(
                     bestPlan.getUrlImage,
-                    width: 120,
-                    height: 120,
+                    width: 150,
+                    height: 150,
                   ),
                 ),
               ],

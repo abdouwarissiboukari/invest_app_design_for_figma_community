@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invest_app/controllers/CreateAccountPage.dart';
-import 'package:invest_app/controllers/HomePage.dart';
+import 'package:invest_app/controllers/Home.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/main.dart';
 import 'package:invest_app/models/Account.dart';
@@ -16,6 +16,9 @@ import 'package:invest_app/views/CustomSnackbar.dart';
 import 'package:invest_app/views/CustomTextFormField.dart';
 import 'package:invest_app/views/CustomTitleTextView.dart';
 import 'package:provider/provider.dart';
+
+import '../data/SvgData.dart';
+import '../views/CustomIconButtonSvg.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -61,10 +64,10 @@ class LoginPageState extends State<LoginPage> {
           height: 0,
           width: 0,
         ),
-        leadingIcon: CustomIconButton(
-          onPressed: onBackPressed,
-          icon: Icons.arrow_back_ios,
-          color: context.watch<DataProvider>().appIconColorGray_dp,
+        leadingIcon: CustomIconButtonSvg(
+          onPressed: () => Navigator.pop(context),
+          icon: backArrowSvg,
+          color: context.watch<DataProvider>().appTextColor_dp,
         ),
         trailingIcon: const SizedBox(
           height: 0,
@@ -126,7 +129,7 @@ class LoginPageState extends State<LoginPage> {
                           buttonTex: strButtonTex,
                           width: deviceSize.width,
                           buttonColor: appPrimaryColor,
-                          textColor: buttonTextColor,
+                          textColor: appButtonTextColor,
                           textSize: 17,
                         ),
                       ),
@@ -196,7 +199,8 @@ class LoginPageState extends State<LoginPage> {
           gender: Gender.male,
           birthdate: DateTime(1987, 4, 7),
           email: "warren.buff@invest.ai",
-          urlProfile: "profil.png",
+          urlProfile: "assets/profil.png",
+          level: "Expert",
         );
 
         defaultAccount = Account(
@@ -207,12 +211,12 @@ class LoginPageState extends State<LoginPage> {
         );
 
         Navigator.pop(context);
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (BuildContext ctx) =>
-                HomePage(strFullName: userConnected.fullName),
+            builder: (BuildContext ctx) => Home(),
           ),
+          (_) => false,
         ).then((value) => formKey.currentState?.reset());
       } else {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:invest_app/controllers/HomePage.dart';
 import 'package:invest_app/controllers/LoginPage.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/main.dart';
@@ -10,11 +9,15 @@ import 'package:invest_app/models/User.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomButton.dart';
 import 'package:invest_app/views/CustomIconButton.dart';
-import 'package:invest_app/views/CustomScaffoldWithIcon.dart';
 import 'package:invest_app/views/CustomSnackbar.dart';
 import 'package:invest_app/views/CustomTextFormField.dart';
 import 'package:invest_app/views/CustomTitleTextView.dart';
 import 'package:provider/provider.dart';
+
+import '../data/SvgData.dart';
+import '../views/CustomIconButtonSvg.dart';
+import '../views/CustomScaffold.dart';
+import 'Home.dart';
 
 class CreateAccountPage extends StatefulWidget {
   @override
@@ -23,10 +26,11 @@ class CreateAccountPage extends StatefulWidget {
 
 class CreateAccountPageState extends State<CreateAccountPage> {
   final formKey = GlobalKey<FormState>();
-  late TextEditingController fullNameController;
-  late TextEditingController emailController;
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool isPassWordShow = true;
+  bool isDispose = true;
 
   final strTitle = "Create an account";
   final strDescription = "Invest and double your income now";
@@ -42,8 +46,8 @@ class CreateAccountPageState extends State<CreateAccountPage> {
   void initState() {
     super.initState();
     formKey.currentState?.initState();
-    fullNameController.text = userConnected.fullName;
-    emailController.text = userConnected.email;
+    // fullNameController.text = userConnected.fullName;
+    // emailController.text = userConnected.email;
   }
 
   @override
@@ -53,19 +57,16 @@ class CreateAccountPageState extends State<CreateAccountPage> {
     passwordController.dispose();
     formKey.currentState?.dispose();
     super.dispose();
+    isDispose = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffoldWithIcon(
-      drawer: const SizedBox(
-        height: 0,
-        width: 0,
-      ),
-      leadingIcon: CustomIconButton(
-        onPressed: onBackPressed,
-        icon: Icons.arrow_back_ios,
-        color: appIconColorGray,
+    return CustomScaffold(
+      leadingIcon: CustomIconButtonSvg(
+        onPressed: () => Navigator.pop(context),
+        icon: backArrowSvg,
+        color: context.watch<DataProvider>().appTextColor_dp,
       ),
       trailingIcon: const SizedBox(
         height: 0,
@@ -139,7 +140,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
                             buttonTex: strButtonTex,
                             width: deviceSize.width,
                             buttonColor: appPrimaryColor,
-                            textColor: buttonTextColor,
+                            textColor: appButtonTextColor,
                             textSize: 17,
                           ),
                         ),
@@ -204,7 +205,7 @@ class CreateAccountPageState extends State<CreateAccountPage> {
     return null;
   }
 
-  onCreateAccountPressed() {
+  onCreateAccountPressed() async {
     if (formKey.currentState!.validate()) {
       //There must be implemented the logic of userAccount creation
 
@@ -214,7 +215,8 @@ class CreateAccountPageState extends State<CreateAccountPage> {
         gender: Gender.male,
         birthdate: DateTime(1987, 4, 7),
         email: "warren.buff@invest.ai",
-        urlProfile: "profil.png",
+        urlProfile: "assets/profil.png",
+        level: "Expert",
       );
 
       defaultAccount = Account(
@@ -229,17 +231,18 @@ class CreateAccountPageState extends State<CreateAccountPage> {
           .setUserInfo(isConnected: true, fullName: fullNameController.text);
 
       Navigator.pop(context);
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (BuildContext ctx) => HomePage(
-            strFullName: userConnected.fullName,
-          ),
+          builder: (BuildContext ctx) => Home(),
         ),
+        (_) => false,
       ).then((_) {
-        setState(() {
-          formKey.currentState?.reset();
-        });
+        if (isDispose) {
+          setState(() {
+            formKey.currentState?.reset();
+          });
+        }
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(

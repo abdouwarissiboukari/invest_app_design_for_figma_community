@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:invest_app/models/Gender.dart';
 
 class User {
@@ -9,8 +10,11 @@ class User {
   String phoneNumber;
   String address;
   String urlProfile;
+  String level;
 
   String get getUrlProfile => "assets/$urlProfile";
+  String get getBirthdate =>
+      '${DateFormat.d().format(birthdate)} ${DateFormat.LLLL().format(birthdate)} ${DateFormat.y().format(birthdate)}';
 
   User({
     required this.id,
@@ -18,8 +22,9 @@ class User {
     required this.gender,
     required this.birthdate,
     required this.email,
-    this.address = "",
-    this.phoneNumber = "",
-    this.urlProfile = "",
+    required this.level,
+    this.address = "-",
+    this.phoneNumber = "-",
+    this.urlProfile = "profil.png",
   });
 }

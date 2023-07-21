@@ -6,7 +6,7 @@ class Account {
   String accountName;
   double accountBalance;
 
-  String get getAccountBalance => accountBalance.toDOubleFormats();
+  String get getAccountBalance => accountBalance.toDoubleFormatsN();
 
   Account({
     required this.userId,

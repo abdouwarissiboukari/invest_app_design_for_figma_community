@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:invest_app/controllers/Home.dart';
-import 'package:invest_app/controllers/HomePage.dart';
 import 'package:invest_app/controllers/SignUpPage.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/data/OsThemeExtension.dart';
@@ -96,7 +95,8 @@ class SplashScreenState extends State<SplashScreen> {
         gender: Gender.male,
         birthdate: DateTime(1987, 4, 7),
         email: "warren.buff@invest.ai",
-        urlProfile: "profil.png",
+        urlProfile: "assets/profil.png",
+        level: "Expert",
       );
 
       defaultAccount = Account(

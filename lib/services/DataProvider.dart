@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:invest_app/data/AppColors.dart';
 import 'package:invest_app/data/ColorsFromHexa.dart';
 import 'package:invest_app/main.dart';
 import 'package:invest_app/services/DataPreferences.dart';
+
+import '../data/DefaultData.dart';
+import '../models/BestPlan.dart';
 
 class DataProvider with ChangeNotifier {
   bool isConnect = false;
@@ -15,8 +20,15 @@ class DataProvider with ChangeNotifier {
   Color appIconColorGray_dp = appIconColorGray;
   Color appInputBorderColor_dp = appInputBorderColor;
   Color appBackgroundColor_dp = appBackgroundColor;
+  Color appSubTextColorGray_dp = appSubTextColorGray;
+  Color appWidgetBackgroundColor_dp = appWidgetBackgroundColor;
   String splashScreenUrl_dp =
       (isDarkMode) ? "assets/dark_sc.png" : "assets/ligth_sc.png";
+  bool isFilled_dp = false;
+  bool isExtended_bankAccountPage = false;
+
+  List<BestPlan> bestPlans_dp = DefaultData().allBestPlans();
+  List<BestPlan> bestPlansSearchResult_dp = [];
 
   DataProvider() {
     getUserInfo();
@@ -33,10 +45,13 @@ class DataProvider with ChangeNotifier {
     blThemMode = value;
 
     appTextColor_dp = (isDarkMode) ? "#FFFFFF".toColor() : "#000000".toColor();
-    appTextColorGray_dp = (isDarkMode) ? appLigthColor : appDarkColor;
+    appTextColorGray_dp = (isDarkMode) ? appLigthColor : appGrayColorText;
+    appSubTextColorGray_dp = (isDarkMode) ? appLigthColor : appGrayColor;
     appIconColorGray_dp = (isDarkMode) ? appLigthColor : appDarkColor;
     appInputBorderColor_dp = (isDarkMode) ? "#828282".toColor() : appDarkColor;
     appBackgroundColor_dp = (isDarkMode) ? appDarkColor : appLightColorL;
+    appWidgetBackgroundColor_dp =
+        (isDarkMode) ? "#000000".toColor() : "#FFFFFF".toColor();
     splashScreenUrl_dp =
         (isDarkMode) ? "assets/dark_sc.png" : "assets/ligth_sc.png";
 
@@ -67,6 +82,42 @@ class DataProvider with ChangeNotifier {
     if (isSuccess) {
       isConnect = isConnected;
       strFullName = fullName;
+    }
+
+    notifyListeners();
+  }
+
+  setIsSearchFilled(bool value) {
+    isFilled_dp = value;
+    notifyListeners();
+  }
+
+  setIsExtendedBankAccountPage(bool value) {
+    isExtended_bankAccountPage = value;
+    notifyListeners();
+  }
+
+  searchPlans(String value) {
+    if (value.isNotEmpty) {
+      bestPlans_dp = DefaultData()
+          .allBestPlans()
+          .where((x) => x.title.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    } else {
+      bestPlans_dp = DefaultData().allBestPlans();
+    }
+
+    notifyListeners();
+  }
+
+  searchPlanResult(String value) {
+    if (value.isNotEmpty) {
+      bestPlansSearchResult_dp = DefaultData()
+          .allBestPlans()
+          .where((x) => x.title.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    } else {
+      bestPlansSearchResult_dp = [];
     }
 
     notifyListeners();

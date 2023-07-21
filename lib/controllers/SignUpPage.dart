@@ -75,7 +75,7 @@ class SignUpPageState extends State<SignUpPage> {
                           buttonTex: signUpButtonText,
                           width: deviceSize.width,
                           buttonColor: appPrimaryColor,
-                          textColor: buttonTextColor,
+                          textColor: appButtonTextColor,
                           textSize: 17,
                         ),
                       ),

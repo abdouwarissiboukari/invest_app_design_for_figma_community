@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invest_app/data/AppColors.dart';
@@ -24,16 +22,19 @@ class CustomTextView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      textValue,
-      style: GoogleFonts.signika(
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        color: textColor,
+    return Material(
+      color: Colors.transparent,
+      child: Text(
+        textValue,
+        style: GoogleFonts.signika(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: textColor,
+        ),
+        maxLines: textMaxLine,
+        overflow: TextOverflow.ellipsis,
+        textAlign: textAlign,
       ),
-      maxLines: textMaxLine,
-      overflow: TextOverflow.ellipsis,
-      textAlign: textAlign,
     );
   }
 }

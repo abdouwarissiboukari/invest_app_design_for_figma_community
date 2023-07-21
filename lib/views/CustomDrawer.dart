@@ -1,9 +1,11 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:invest_app/controllers/LoginPage.dart';
 import 'package:invest_app/data/AppColors.dart';
+import 'package:invest_app/data/SvgData.dart';
 import 'package:invest_app/main.dart';
 import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomIconButton.dart';
@@ -116,8 +118,7 @@ class CustomDrawerState extends State<CustomDrawer> {
                         textValue: addAccount,
                         iconLeft: Icon(
                           Icons.add,
-                          color:
-                              context.watch<DataProvider>().appIconColorGray_dp,
+                          color: context.watch<DataProvider>().appTextColor_dp,
                         ),
                         iconRight: const SizedBox(
                           height: 0,
@@ -131,9 +132,13 @@ class CustomDrawerState extends State<CustomDrawer> {
                 CustomInkWell(
                   onTap: () {},
                   textValue: contactInfo,
-                  iconLeft: Icon(
-                    Icons.contacts,
-                    color: context.watch<DataProvider>().appIconColorGray_dp,
+                  iconLeft: SvgPicture.string(
+                    contactSvg,
+                    height: 24,
+                    width: 24,
+                    colorFilter: ColorFilter.mode(
+                        context.watch<DataProvider>().appTextColor_dp,
+                        BlendMode.srcIn),
                   ),
                   iconRight: const SizedBox(
                     height: 0,
@@ -143,9 +148,13 @@ class CustomDrawerState extends State<CustomDrawer> {
                 CustomInkWell(
                   onTap: () {},
                   textValue: sourceofFundingInfo,
-                  iconLeft: Icon(
-                    Icons.account_balance_wallet_outlined,
-                    color: context.watch<DataProvider>().appIconColorGray_dp,
+                  iconLeft: SvgPicture.string(
+                    fundingSvg,
+                    height: 24,
+                    width: 24,
+                    colorFilter: ColorFilter.mode(
+                        context.watch<DataProvider>().appTextColor_dp,
+                        BlendMode.srcIn),
                   ),
                   iconRight: const SizedBox(
                     height: 0,
@@ -155,9 +164,13 @@ class CustomDrawerState extends State<CustomDrawer> {
                 CustomInkWell(
                   onTap: () {},
                   textValue: bankAccountInfo,
-                  iconLeft: Icon(
-                    Icons.account_balance_outlined,
-                    color: context.watch<DataProvider>().appIconColorGray_dp,
+                  iconLeft: SvgPicture.string(
+                    bankSvg,
+                    height: 24,
+                    width: 24,
+                    colorFilter: ColorFilter.mode(
+                        context.watch<DataProvider>().appTextColor_dp,
+                        BlendMode.srcIn),
                   ),
                   iconRight: const SizedBox(
                     height: 0,
@@ -167,9 +180,13 @@ class CustomDrawerState extends State<CustomDrawer> {
                 CustomInkWell(
                   onTap: () {},
                   textValue: documentInfo,
-                  iconLeft: Icon(
-                    Icons.insert_drive_file_outlined,
-                    color: context.watch<DataProvider>().appIconColorGray_dp,
+                  iconLeft: SvgPicture.string(
+                    documentSvg,
+                    height: 24,
+                    width: 24,
+                    colorFilter: ColorFilter.mode(
+                        context.watch<DataProvider>().appTextColor_dp,
+                        BlendMode.srcIn),
                   ),
                   iconRight: const SizedBox(
                     height: 0,
@@ -179,9 +196,13 @@ class CustomDrawerState extends State<CustomDrawer> {
                 CustomInkWell(
                   onTap: () {},
                   textValue: settings,
-                  iconLeft: Icon(
-                    Icons.settings,
-                    color: context.watch<DataProvider>().appIconColorGray_dp,
+                  iconLeft: SvgPicture.string(
+                    settingSvg,
+                    height: 24,
+                    width: 24,
+                    colorFilter: ColorFilter.mode(
+                        context.watch<DataProvider>().appTextColor_dp,
+                        BlendMode.srcIn),
                   ),
                   iconRight: const SizedBox(
                     height: 0,
@@ -224,7 +245,7 @@ class CustomDrawerState extends State<CustomDrawer> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     CircleAvatar(
-                      backgroundImage: AssetImage(userConnected.getUrlProfile),
+                      backgroundImage: AssetImage(userConnected.urlProfile),
                       radius: 30,
                     ),
                     Transform.translate(
@@ -239,8 +260,7 @@ class CustomDrawerState extends State<CustomDrawer> {
                         icon: (context.watch<DataProvider>().blThemMode)
                             ? Icons.light_mode
                             : Icons.dark_mode,
-                        color:
-                            context.watch<DataProvider>().appIconColorGray_dp,
+                        color: context.watch<DataProvider>().appTextColor_dp,
                       ),
                     ),
                   ],
@@ -287,8 +307,7 @@ class CustomDrawerState extends State<CustomDrawer> {
                         icon: expandableController.expanded
                             ? Icons.expand_less
                             : Icons.expand_more,
-                        color:
-                            context.watch<DataProvider>().appIconColorGray_dp,
+                        color: context.watch<DataProvider>().appTextColor_dp,
                       ),
                     ),
                   ],
@@ -301,7 +320,7 @@ class CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  onLogout() {
+  onLogout() async {
     context.read<DataProvider>().setIsConnect(false);
     Navigator.pop(context);
     Navigator.pushReplacement(

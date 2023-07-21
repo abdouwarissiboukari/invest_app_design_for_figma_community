@@ -5,17 +5,25 @@ import 'package:invest_app/services/DataProvider.dart';
 import 'package:invest_app/views/CustomTextView.dart';
 import 'package:provider/provider.dart';
 
-class CustomScaffold extends StatelessWidget {
+class CustomScaffoldFloatingButton extends StatelessWidget {
   Widget bodyWidget;
   String appTitleText;
   Widget leadingIcon;
   Widget trailingIcon;
+  Widget floatingIcon;
+  Widget floatingLabel;
+  Function() floatingOnPressed;
+  Color floatingBackgroundColor;
 
-  CustomScaffold({
+  CustomScaffoldFloatingButton({
     super.key,
     this.appTitleText = "",
     required this.leadingIcon,
     required this.trailingIcon,
+    required this.floatingIcon,
+    required this.floatingLabel,
+    required this.floatingOnPressed,
+    required this.floatingBackgroundColor,
     required this.bodyWidget,
   });
 
@@ -75,6 +83,13 @@ class CustomScaffold extends StatelessWidget {
       ),
       backgroundColor: context.watch<DataProvider>().appBackgroundColor_dp,
       body: bodyWidget,
+      floatingActionButton: FloatingActionButton.extended(
+        isExtended: context.watch<DataProvider>().isExtended_bankAccountPage,
+        onPressed: floatingOnPressed,
+        backgroundColor: floatingBackgroundColor,
+        icon: floatingIcon,
+        label: floatingLabel,
+      ),
     );
   }
 }
